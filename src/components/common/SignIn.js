@@ -42,7 +42,7 @@ class SignIn extends Component {
 		let user = localStorage.getItem(keyUser);
 		if(user){
 			try {
-				let userData = JSON.parse(user);
+			//	let userData = user;
 				//this.props.refreshToken(userData.refresh_token);
 				this.props.fetchUser();
 				this.setState({ loginStatus: true });
@@ -57,10 +57,9 @@ class SignIn extends Component {
 		this.form.validateFields(async (err, values) => {
 			if (!err) {
         try {
-		      await this.props.signinUser(values.username, values.password);
-		      await this.props.fetchUser();
-          this.setState({ loginStatus: true });
-          this.props.history.push("/home");
+			await this.props.signinUser(values.username, values.password);
+          	this.setState({ loginStatus: true });
+          	this.props.history.push("/home");
         } catch (error) {
 			let message = "Network Error, Wifi ခ်ိတ္ေပးပါ";
 			if (error.response) {

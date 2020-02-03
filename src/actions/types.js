@@ -11,14 +11,19 @@ export const TNOS = "TNOS";
 export const ORDERS = "ORDERS";
 export const BILL_ORDERS = "BILL_ORDERS";
 
+
+export const SONGS = "SONGS";
+
 export const keyToken = "access_token";
 export const keyUserName = "user_name";
 export const keyUser = "user_data";
-export const keyWaiter = 'keyWaiter';
+export const keySongs = 'key_songs';
 
 const endpoint = "/xapiv1";
 export const urlToken = endpoint + "/oauth/token";
 export const urlUserInfo = endpoint + '/zone/user/username/';
+
+export const urlSongs = endpoint + '/song/query';
 
 export const urlLogout = '/api/Waiter/Logout';
 export const urlGetWaiter = '/api/Waiter/Waiter';

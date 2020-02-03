@@ -3,10 +3,6 @@ import qs from "qs";
 
 import * as TYPES from "./types";
 
-const urlEncodedHeader = {
-	'Content-Type': 'application/json;charset=UTF-8'
-  };
-
 const getLoginHeader = () => {
 	const clientId = "kcrock";
 	const clientSecret = "securekc";
@@ -21,7 +17,7 @@ const getLoginHeader = () => {
 }
 
 const getAuthHeader = () => {
-	const auth = localStorage.getItem(TYPES.AUTH_USER);
+	const auth = JSON.parse(localStorage.getItem(TYPES.keyToken));
 	if (!auth) {
 		return false;
 	}
@@ -29,28 +25,6 @@ const getAuthHeader = () => {
 			headers: {
 			'Content-Type': 'application/json',
 			'Authorization': 'Bearer ' + auth.access_token
-			}
-		};
-}
-
-const getAuthHeaderParam = token => {
-	return { 
-			headers: {
-			'Content-Type': 'application/json;charset=UTF-8',
-			'Authorization': 'Bearer ' + token
-			}
-		};
-}
-
-const getAuthJSONHeader = () => {
-	const token = localStorage.getItem(TYPES.keyToken);
-	if (!token) {
-		return false;
-	}
-	return { 
-			headers: {
-			'Content-Type': 'application/json',
-			'Authorization': 'Bearer ' + token
 			}
 		};
 }
@@ -79,6 +53,7 @@ export const signinUser = (username, password) => async dispatch => {
   const header = getLoginHeader();
   const res = await axios.post(TYPES.urlToken, data, header);
   localStorage.setItem(TYPES.keyUserName, username);
+  localStorage.setItem(TYPES.keyToken, JSON.stringify(res.data));
   dispatch({ type: TYPES.AUTH_USER, payload: res.data });
 };
 
@@ -123,7 +98,22 @@ export const signout = history => async dispatch => {
 	} finally {
 		await localStorage.removeItem(TYPES.keyToken);
 		await localStorage.removeItem(TYPES.keyUserName);
-		await localStorage.removeItem(TYPES.keyWaiter);
 		await localStorage.removeItem(TYPES.keyUser)
 	}
+};
+
+export const fetchSongs = reqData => async dispatch => {
+	const data = {
+		title : reqData.title,
+		artist: reqData.artist,
+		language: reqData.language,
+		info: reqData.info,
+		page: {
+			page: reqData.page,
+			size: reqData.size
+		}
+	}
+  const header = getAuthHeader();
+  const res = await axios.post(TYPES.urlSongs, data, header);
+  dispatch({ type: TYPES.SONGS, payload: res.data });
 };

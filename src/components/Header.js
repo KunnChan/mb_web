@@ -1,12 +1,15 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { Layout, Menu } from "antd";
+import { Layout, Menu, Icon } from "antd";
 import { signout } from "../actions";
 
-const { Header } = Layout;
+const { Header, Sider } = Layout;
 
 class Headerr extends Component {
+	state = {
+		collapsed: false,
+	  };
 	onSignOut = () =>{
 		this.props.signout();
 	}
@@ -15,21 +18,23 @@ class Headerr extends Component {
 			return null;
 		} else {
 			return (
-				<Menu.Item key="4" style={{ float: "right" }}>
+				<Menu.Item key="7" style={{ float: "right" }}>
 					<Link to="/signout">Sign Out</Link>
 				</Menu.Item>
 			);
 		}
 	}
+	toggle = () => {
+		this.setState({
+		  collapsed: !this.state.collapsed,
+		});
+	  };
+
 	render() {
-		let userName = "Rythm Box";
-		if( this.props.auth){
-			let data = JSON.parse(this.props.auth)
-			userName = data.userName;
-		}
 
 		return (
 			<Layout style={{ marginBottom: 50 }}>
+				
 				<Header
 					style={{
 						position: "fixed",
@@ -39,9 +44,14 @@ class Headerr extends Component {
 						height: 50
 					}}>
 					<Link to="/home" className="logo">
-					  {userName}
+					  Rythm Box
 					</Link>
 					<Menu theme="dark" mode="horizontal" style={{ lineHeight: "50px", backgroundColor:'#247796' }}>
+						<Menu.Item key="1">Song</Menu.Item>
+						<Menu.Item key="2">Album</Menu.Item>
+						<Menu.Item key="3">Feedback</Menu.Item>
+						<Menu.Item key="4">Txn</Menu.Item>
+						<Menu.Item key="5">User</Menu.Item>
 						{this.renderSignOutLink()}
 					</Menu>
 				</Header>
