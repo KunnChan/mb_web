@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { Layout, Menu, Icon } from "antd";
 import { signout } from "../actions";
 
-const { Header, Sider } = Layout;
+const { Header } = Layout;
 
 class Headerr extends Component {
 	state = {
