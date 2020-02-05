@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import SignUp from "./common/SignUp";
 import Header from "./Header";
@@ -23,7 +23,8 @@ class App extends Component {
 					<Switch>
 						<Route exact path="/" component={SignIn} />
 						<Route exact path="/signout" component={SignOut} />
-						<Route component={NotFound} />
+						<Redirect to="/" />
+						{/* <Route component={NotFound} /> */}
 					</Switch>
 				</div>
 			</BrowserRouter>

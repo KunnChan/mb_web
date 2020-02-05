@@ -3,16 +3,8 @@ export const AUTH_USER = "AUTH_USER";
 export const LOCALE_SET = "LOCALE_SET";
 export const UNAUTH_USER = "UNAUTH_USER";
 
-export const WAITER = "WAITER";
-export const TABLE = "TABLE";
-export const MENU_GROUP = "MENU_GROUP";
-export const MENUS = "MENUS";
-export const TNOS = "TNOS";
-export const ORDERS = "ORDERS";
-export const BILL_ORDERS = "BILL_ORDERS";
-
-
 export const SONGS = "SONGS";
+export const USER ="USER";
 
 export const keyToken = "access_token";
 export const keyUserName = "user_name";

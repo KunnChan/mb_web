@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { Layout, Menu, Icon } from "antd";
 import { signout } from "../actions";
-
+import { Auxi } from "./Auxi";
 const { Header } = Layout;
 
 class Headerr extends Component {
@@ -18,9 +18,17 @@ class Headerr extends Component {
 			return null;
 		} else {
 			return (
-				<Menu.Item key="7" style={{ float: "right" }}>
-					<Link to="/signout">Sign Out</Link>
-				</Menu.Item>
+				<Menu theme="dark" mode="horizontal" style={{ lineHeight: "50px", backgroundColor:'#247796' }}>
+					<Menu.Item key="1">Song</Menu.Item>
+					<Menu.Item key="2">Album</Menu.Item>
+					<Menu.Item key="3">Feedback</Menu.Item>
+					<Menu.Item key="4">Txn</Menu.Item>
+					<Menu.Item key="5">User</Menu.Item>
+					<Menu.Item key="7" style={{ float: "right" }}>
+						<Link to="/signout">Sign Out</Link>
+					</Menu.Item>
+				</Menu>
+				
 			);
 		}
 	}
@@ -46,14 +54,7 @@ class Headerr extends Component {
 					<Link to="/home" className="logo">
 					  Rythm Box
 					</Link>
-					<Menu theme="dark" mode="horizontal" style={{ lineHeight: "50px", backgroundColor:'#247796' }}>
-						<Menu.Item key="1">Song</Menu.Item>
-						<Menu.Item key="2">Album</Menu.Item>
-						<Menu.Item key="3">Feedback</Menu.Item>
-						<Menu.Item key="4">Txn</Menu.Item>
-						<Menu.Item key="5">User</Menu.Item>
-						{this.renderSignOutLink()}
-					</Menu>
+					{this.renderSignOutLink()}
 				</Header>
 			</Layout>
 		);

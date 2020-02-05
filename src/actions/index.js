@@ -1,6 +1,5 @@
 import axios from "axios";
 import qs from "qs";
-
 import * as TYPES from "./types";
 
 const axiosInstance = axios.create({
@@ -29,7 +28,9 @@ const requestHandler = (request) => {
 	return request
   }
  
+let isInPregress = false;
 const errorHandler = (err) => {
+	
 	return new Promise((resolve, reject) => {
 		const originalReq = err.config;
 		if ( err.response.status === 401 && err.config && !err.config.__isRetryRequest ){
@@ -39,23 +40,24 @@ const errorHandler = (err) => {
 				if(!auth){
 					return;
 				}
-				const data = qs.stringify({
-					refresh_token: auth.refresh_token,
-					grant_type: 'refresh_token'
-				});
-
+			let refreshToken = JSON.parse(auth).refresh_token;
 			const header = getLoginHeader();
-			axios.post(TYPES.urlToken, data, header)
-			.then(res => res.json()).then(res => {
-				console.log(res);
-				this.setSession({token: res.token, refresh_token: res.refresh});
-				originalReq.headers['Token'] = res.token;
-				originalReq.headers['Device'] = "device";
-
-
-				return axios(originalReq);
+			const data = qs.stringify({
+				refresh_token: refreshToken,
+				grant_type: 'refresh_token'
 			});
-			resolve(resolve);
+			if(!isInPregress){
+					isInPregress = true;
+					axios.post(TYPES.urlToken, data, header)
+				.then(res => {
+					isInPregress = false;
+					originalReq.headers['Authorization'] = 'Bearer ' + res.data.access_token
+					localStorage.setItem(TYPES.keyToken, JSON.stringify(res.data));
+					return axios(originalReq);
+				});
+				resolve(resolve);
+			}
+			
 		}
 		return Promise.reject(err);
 	});
@@ -86,7 +88,7 @@ export const fetchUser = () => async dispatch => {
 		const res = await axiosInstance.get(TYPES.urlUserInfo + username);
 		localStorage.setItem(TYPES.keyUser, JSON.stringify(res.data));
 
-		dispatch({ type: TYPES.WAITER, payload: res.data });
+		dispatch({ type: TYPES.USER, payload: res.data });
 	} catch (error) {
 		console.error("fetchUser error ", error);
 	}
@@ -182,5 +184,6 @@ export const fetchSongs = reqData => async dispatch => {
 		}
 	}
   const res = await axiosInstance.post(TYPES.urlSongs, data);
-  dispatch({ type: TYPES.SONGS, payload: res.data });
+  if(res.data)
+  	dispatch({ type: TYPES.SONGS, payload: res.data });
 };

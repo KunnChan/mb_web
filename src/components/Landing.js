@@ -82,8 +82,8 @@ export class Landing extends Component {
 		
 		return (
 			<Content style={{ padding: '20px' }}>
-				<Button type="primary" icon="form" size={'medium'} /> |  
-        <Button type="primary" icon="search" size={'medium'} />
+				<Button type="primary" icon="form" /> |  
+        <Button type="primary" icon="search" />
         {/* <SongForm />
         <SongAdvandSearchForm /> */}
         <hr />
