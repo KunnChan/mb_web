@@ -55,8 +55,11 @@ const errorHandler = (err) => {
 					localStorage.setItem(TYPES.keyToken, JSON.stringify(res.data));
 					return axiosInstance(originalReq);
 				}).catch(error => {
-					this.signout();
-					return Promise.reject(err);
+					debugger
+					localStorage.removeItem(TYPES.keyToken);
+					localStorage.removeItem(TYPES.keyUserName);
+					localStorage.removeItem(TYPES.keyUser)
+					return Promise.reject(error);
 				})
 			//	return Promise.resolve(resolve);
 			}
@@ -113,7 +116,10 @@ export const signinUser = (username, password) => async dispatch => {
 };
 
 
-export const signout = history => async dispatch => {
+export const signout = () => async dispatch => {
+
+	console.log("Signout ", dispatch);
+	
 	dispatch({ type: TYPES.UNAUTH_USER, payload: false });
 	localStorage.removeItem(TYPES.keyToken);
 	localStorage.removeItem(TYPES.keyUserName);
@@ -122,6 +128,7 @@ export const signout = history => async dispatch => {
 
 export const fetchSongs = reqData => async dispatch => {
 	const data = {
+		id: reqData.id,
 		title : reqData.title,
 		artist: reqData.artist,
 		language: reqData.language,
@@ -136,6 +143,16 @@ export const fetchSongs = reqData => async dispatch => {
 		dispatch({ type: TYPES.SONGS, payload: res.data });
   }).catch(error => {
 	console.error("fetchSongs ",error);
+  })
+  
+};
+
+export const saveSong = reqData => async dispatch => {
+  axiosInstance.post(TYPES.urlSaveSong, reqData)
+  	.then(res => {
+		dispatch({ type: TYPES.SONG, payload: res.data });
+  }).catch(error => {
+	console.error("saveSong ",error);
   })
   
 };

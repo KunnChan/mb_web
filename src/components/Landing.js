@@ -1,49 +1,20 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Layout, Table, Button } from 'antd';
-import { fetchUser, fetchSongs } from "../actions";
+import { fetchUser, fetchSongs, saveSong } from "../actions";
 import SongAdvandSearchForm from "./SongAdvandSearchForm";
 import SongForm from "./SongForm";
 
 const { Content } = Layout;
 
 const columns = [
-  {
-    title: 'ID',
-    dataIndex: 'id',
-    width: '5%',
-  },
-  {
-    title: 'Title',
-    dataIndex: 'title',
-    width: '20%',
-    render: text => <a>{text}</a>
-  },
-  {
-    title: 'Artist',
-    dataIndex: 'artist',
-    width: '20%',
-  },
-  {
-    title: 'Download',
-    dataIndex: 'downloads',
-    width: '10%',
-  },
-  {
-    title: 'Album',
-    dataIndex: 'album',
-    width: '20%',
-  },
-  {
-    title: 'Language',
-    dataIndex: 'language',
-    width: '15%',
-  },
-  {
-    title: 'Genre',
-    dataIndex: 'genre',
-    width: '20%',
-  }
+  { title: 'ID', dataIndex: 'id', width: '5%'},
+  { title: 'Title', dataIndex: 'title', width: '20%', render: text => <a>{text}</a> },
+  { title: 'Artist', dataIndex: 'artist', width: '20%'},
+  { title: 'Download', dataIndex: 'downloads', width: '10%' },
+  { title: 'Album', dataIndex: 'album', width: '20%'},
+  { title: 'Language', dataIndex: 'language', width: '15%' },
+  { title: 'Genre', dataIndex: 'genre', width: '20%'}
 ];
 export class Landing extends Component {
 
@@ -78,12 +49,9 @@ export class Landing extends Component {
     
   }
 
-  onSearchClick = () =>{
-    this.setState({ isOnSearch : !this.state.isOnSearch})
-  }
-
   handleFormSubmit = data => {
-    console.log("Data ", data);
+    this.props.saveSong(data);
+    this.setState({ isOnEdit : false})
   }
 
   handleFormSearch = data => {
@@ -119,11 +87,10 @@ export class Landing extends Component {
 		return (
 			<Content style={{ padding: '20px' }}>
         <div style={{ marginBottom: '20px' }} >
-				  <Button type="primary" icon="form" onClick={this.onFormClick} /> |  
-          <Button type="primary" icon="search"  onClick={this.onSearchClick}  />
+				  <Button type="primary" icon="form" onClick={this.onFormClick} />
         </div>
         {this.state.isOnEdit ? <SongForm submit={this.handleFormSubmit} song={this.state.song} /> : null}
-        {this.state.isOnSearch ? <SongAdvandSearchForm submit={this.handleFormSearch}/> : null}
+        <SongAdvandSearchForm submit={this.handleFormSearch}/>
        
         <hr />
 				<Table
@@ -143,8 +110,8 @@ export class Landing extends Component {
 		);
 	}
 }
-const mapStateToProps = ({ auth, songs, user }) => {
-	return { auth, songs, user };
+const mapStateToProps = ({ auth, songs, song, user }) => {
+	return { auth, songs, song, user };
 };
 
-export default connect( mapStateToProps, { fetchUser, fetchSongs })(Landing);
+export default connect( mapStateToProps, { fetchUser, fetchSongs, saveSong })(Landing);

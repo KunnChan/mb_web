@@ -1,8 +1,8 @@
 import * as TYPES from "../actions/types";
 
-export default function(state = {}, action) {
+export default function(state = [], action) {
 	switch (action.type) {
-		case TYPES.SONG:
+		case TYPES.SONGS:
 			return action.payload;
 		default:
 			return state;

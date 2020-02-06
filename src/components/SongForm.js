@@ -9,7 +9,10 @@ class SongForm extends Component {
     handleSubmit = e => {
       e.preventDefault();
       this.props.form.validateFields((err, values) => {
+        console.log("Err ", err);
+        
         this.props.submit(values);
+        this.handleReset();
       });
     };
   
@@ -19,7 +22,7 @@ class SongForm extends Component {
   
     render() {
     
-      const { song, form } = this.props;
+      const { form } = this.props;
       const { getFieldDecorator } = form;
       
       return (
@@ -35,7 +38,8 @@ class SongForm extends Component {
             <Col span={8} key={"title"}>
               <Form.Item label={`Title`}>
                 {getFieldDecorator(`title`, {
-                 
+                 required: true,
+                 message: 'Title please!',
                 })(<Input />)}
               </Form.Item>
             </Col>
@@ -60,13 +64,7 @@ class SongForm extends Component {
               })(<Input />)}
               </Form.Item>
             </Col>
-            <Col span={8} key={"album"}>
-                <Form.Item label={`Album`}>
-                {getFieldDecorator(`album`, {
-                    
-                })(<Input />)}
-                </Form.Item>
-            </Col>
+            
             <Col span={8} key={"photolink"}>
                 <Form.Item label={`Photo Url`}>
                 {getFieldDecorator(`photoLink`, {
@@ -91,6 +89,13 @@ class SongForm extends Component {
             <Col span={8} key={"downloadLinkUrl"}>
                 <Form.Item label={`DL Url`}>
                 {getFieldDecorator(`downloadLinkUrl`, {
+                    
+                })(<Input />)}
+                </Form.Item>
+            </Col>
+            <Col span={16} key={"information"}>
+                <Form.Item label={`Keywords`}>
+                {getFieldDecorator(`information`, {
                     
                 })(<Input />)}
                 </Form.Item>
@@ -136,10 +141,7 @@ export default Form.create(
         ...song.genre,
         value: song.genre,
       }),
-      album: Form.createFormField({
-        ...song.album,
-        value: song.album,
-      }),
+     
       photoLink: Form.createFormField({
         ...song.photoLink,
         value: song.photoLink,
@@ -155,6 +157,10 @@ export default Form.create(
       downloadLinkUrl: Form.createFormField({
         ...song.downloadLinkUrl,
         value: song.downloadLinkUrl,
+      }),
+      information: Form.createFormField({
+        ...song.information,
+        value: song.information,
       }),
     };
   },
