@@ -7,7 +7,6 @@ import SongForm from "./SongForm";
 
 const { Content } = Layout;
 
-
 const columns = [
   {
     title: 'ID',
@@ -18,6 +17,7 @@ const columns = [
     title: 'Title',
     dataIndex: 'title',
     width: '20%',
+    render: text => <a>{text}</a>
   },
   {
     title: 'Artist',
@@ -48,8 +48,9 @@ const columns = [
 export class Landing extends Component {
 
   state = {
-	data: [],
-    pagination: {},
+    isOnEdit : false,
+    isOnSearch: false,
+    song: {},
     reqData : {
       title : "",
       artist: "",
@@ -59,6 +60,7 @@ export class Landing extends Component {
       size: 10
     }
   }
+
 	componentDidMount = () => {
 		this.props.fetchUser();
 		this.props.fetchSongs(this.state.reqData);
@@ -71,9 +73,43 @@ export class Landing extends Component {
     this.props.fetchSongs(reqData);
   };
 
+  onFormClick = () =>{
+    this.setState({ isOnEdit : !this.state.isOnEdit})
+    
+  }
+
+  onSearchClick = () =>{
+    this.setState({ isOnSearch : !this.state.isOnSearch})
+  }
+
+  handleFormSubmit = data => {
+    console.log("Data ", data);
+  }
+
+  handleFormSearch = data => {
+    const { reqData } = this.state;
+    reqData.title = data.title;
+    reqData.id = data.id;
+    reqData.artist = data.artist;
+    reqData.language = data.language;
+    reqData.page = 0;
+    reqData.size = 10;
+
+    this.props.fetchSongs(reqData);
+    
+  }
+
+  handleRowDoubleClick = data =>{
+    this.setState({
+      song: data,
+      isOnEdit: true
+    })
+  }
+
+
 	render() {
 		
-		let { songs } = this.props;
+    let { songs } = this.props;
 		const pagination = {
       total : songs.totalElements,
       pageSize: songs.size,
@@ -82,12 +118,20 @@ export class Landing extends Component {
 		
 		return (
 			<Content style={{ padding: '20px' }}>
-				<Button type="primary" icon="form" /> |  
-        <Button type="primary" icon="search" />
-        {/* <SongForm />
-        <SongAdvandSearchForm /> */}
+        <div style={{ marginBottom: '20px' }} >
+				  <Button type="primary" icon="form" onClick={this.onFormClick} /> |  
+          <Button type="primary" icon="search"  onClick={this.onSearchClick}  />
+        </div>
+        {this.state.isOnEdit ? <SongForm submit={this.handleFormSubmit} song={this.state.song} /> : null}
+        {this.state.isOnSearch ? <SongAdvandSearchForm submit={this.handleFormSearch}/> : null}
+       
         <hr />
 				<Table
+          onRow={(record, rowIndex) => {
+            return {
+              onDoubleClick: event => this.handleRowDoubleClick(record)
+            };
+          }}
 					columns={columns}
 					rowKey={record => record.id}
 					dataSource={songs.content}
@@ -99,8 +143,8 @@ export class Landing extends Component {
 		);
 	}
 }
-const mapStateToProps = ({ auth, songs }) => {
-	return { auth, songs };
+const mapStateToProps = ({ auth, songs, user }) => {
+	return { auth, songs, user };
 };
 
 export default connect( mapStateToProps, { fetchUser, fetchSongs })(Landing);

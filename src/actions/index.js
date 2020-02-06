@@ -33,7 +33,7 @@ const errorHandler = (err) => {
 	
 	return new Promise((resolve, reject) => {
 		const originalReq = err.config;
-		if ( err.response.status === 401 && err.config && !err.config.__isRetryRequest ){
+		if ( err.response && err.response.status === 401 && err.config && !err.config.__isRetryRequest ){
 			originalReq._retry = true;
 
 			const auth = localStorage.getItem(TYPES.keyToken);
@@ -53,11 +53,14 @@ const errorHandler = (err) => {
 					isInPregress = false;
 					originalReq.headers['Authorization'] = 'Bearer ' + res.data.access_token
 					localStorage.setItem(TYPES.keyToken, JSON.stringify(res.data));
-					return axios(originalReq);
-				});
-				resolve(resolve);
+					return axiosInstance(originalReq);
+				}).catch(error => {
+					this.signout();
+					return Promise.reject(err);
+				})
+			//	return Promise.resolve(resolve);
 			}
-			
+			return Promise.resolve(resolve);
 		}
 		return Promise.reject(err);
 	});
@@ -82,16 +85,16 @@ const getLoginHeader = () => {
 		};
 }
 
-export const fetchUser = () => async dispatch => {
-	try {
-		let username = localStorage.getItem(TYPES.keyUserName);
-		const res = await axiosInstance.get(TYPES.urlUserInfo + username);
-		localStorage.setItem(TYPES.keyUser, JSON.stringify(res.data));
-
-		dispatch({ type: TYPES.USER, payload: res.data });
-	} catch (error) {
-		console.error("fetchUser error ", error);
-	}
+export const fetchUser = () => dispatch => {
+	let username = localStorage.getItem(TYPES.keyUserName);
+	axiosInstance.get(TYPES.urlUserInfo + username)
+		.then(response => {
+			localStorage.setItem(TYPES.keyUser, JSON.stringify(response.data));
+			dispatch({ type: TYPES.USER, payload: response.data });
+		}).catch( error => {
+			console.error("fetchUser ", error);
+		})
+		
 };
 
 export const signinUser = (username, password) => async dispatch => {
@@ -109,67 +112,12 @@ export const signinUser = (username, password) => async dispatch => {
   dispatch({ type: TYPES.AUTH_USER, payload: res.data });
 };
 
-// export const refreshToken = () => {
-	
-// 	const auth = localStorage.getItem(TYPES.keyToken);
-// 	if(!auth){
-// 		return;
-// 	}
-// 	const data = qs.stringify({
-// 		refresh_token: auth.refresh_token,
-// 		grant_type: 'refresh_token'
-// 	});
-
-//   const header = getLoginHeader();
-//   const res = await axios.post(TYPES.urlToken, data, header);
-//   return res;
-//  // localStorage.setItem(TYPES.keyToken, JSON.stringify(res.data));
-//  // dispatch({ type: TYPES.AUTH_USER, payload: res.data });
-// };
-
-// export const refreshToken = refresh_token => async dispatch => {
-	
-// 	const data = qs.stringify({
-// 		refresh_token,
-// 		grant_type: 'refresh_token'
-// 	});
-//   const res = await axios.post(TYPES.urlLogin, data, urlEncodedHeader);
-  
-//   let str = JSON.stringify(res.data);
-// 	dispatch({ type: TYPES.AUTH_USER, payload: str });
-// 	localStorage.setItem(TYPES.keyToken, res.data.access_token);
-// 	localStorage.setItem(TYPES.keyUserName, res.data.userName);
-// 	localStorage.setItem(TYPES.keyUser, str);
-	
-// };
 
 export const signout = history => async dispatch => {
-	try {
-		await axios.post(TYPES.urlLogout,null);
-		dispatch({ type: TYPES.UNAUTH_USER, payload: false });
-	} catch (error) {
-		if (error.response) {
-		const { status } = error.response;
-			if(status === 401){
-			let user = localStorage.getItem(TYPES.keyUser);
-			if(user){
-				let userData = JSON.parse(user);
-				const data = qs.stringify({
-					refresh_token: userData.refresh_token,
-					grant_type: 'refresh_token'
-				});
-				//  const res = await axios.post(TYPES.urlLogin, data, urlEncodedHeader);
-				//  const token = res.data.access_token;
-				//  await axios.post(TYPES.urlLogout,null, getAuthHeaderParam(token));
-				  dispatch({ type: TYPES.UNAUTH_USER, payload: false });
-				}
-			}
-		}
-	} finally {
-		await localStorage.removeItem(TYPES.keyToken);
-		await localStorage.removeItem(TYPES.keyUserName);
-		await localStorage.removeItem(TYPES.keyUser)
-	}
+	dispatch({ type: TYPES.UNAUTH_USER, payload: false });
+	localStorage.removeItem(TYPES.keyToken);
+	localStorage.removeItem(TYPES.keyUserName);
+	localStorage.removeItem(TYPES.keyUser)
 };
 
 export const fetchSongs = reqData => async dispatch => {
@@ -183,7 +131,11 @@ export const fetchSongs = reqData => async dispatch => {
 			size: reqData.size
 		}
 	}
-  const res = await axiosInstance.post(TYPES.urlSongs, data);
-  if(res.data)
-  	dispatch({ type: TYPES.SONGS, payload: res.data });
+  axiosInstance.post(TYPES.urlSongs, data)
+  	.then( res => {
+		dispatch({ type: TYPES.SONGS, payload: res.data });
+  }).catch(error => {
+	console.error("fetchSongs ",error);
+  })
+  
 };

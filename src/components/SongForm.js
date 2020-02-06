@@ -6,86 +6,10 @@ class SongForm extends Component {
       expand: false,
     };
   
-    // To generate mock Form.Item
-    getFields() {
-      const { getFieldDecorator } = this.props.form;
-      const children = [];
-        children.push(
-          <Col span={6} key={"id"}>
-            <Form.Item label={`ID`}>
-              {getFieldDecorator(`id`, {
-               
-              })(<Input readOnly={true}/>)}
-            </Form.Item>
-          </Col>,
-        );
-        children.push(
-            <Col span={6} key={"title"}>
-              <Form.Item label={`Title`}>
-                {getFieldDecorator(`title`, {
-                 
-                })(<Input />)}
-              </Form.Item>
-            </Col>,
-          );
-        children.push(
-        <Col span={6} key={"artist"}>
-            <Form.Item label={`Artist`}>
-            {getFieldDecorator(`artist`, {
-                
-            })(<Input />)}
-            </Form.Item>
-        </Col>,
-        );
-        children.push(
-            <Col span={6} key={"language"}>
-                <Form.Item label={`Language`}>
-                {getFieldDecorator(`language`, {
-                    
-                })(<Input />)}
-                </Form.Item>
-            </Col>,
-            );
-        children.push(
-          <Col span={6} key={"genre"}>
-              <Form.Item label={`Genre`}>
-              {getFieldDecorator(`genre`, {
-                  
-              })(<Input />)}
-              </Form.Item>
-          </Col>,
-        ); children.push(
-          <Col span={6} key={"album"}>
-              <Form.Item label={`Album`}>
-              {getFieldDecorator(`album`, {
-                  
-              })(<Input />)}
-              </Form.Item>
-          </Col>,
-          ); children.push(
-            <Col span={6} key={"photolink"}>
-                <Form.Item label={`Photo Link`}>
-                {getFieldDecorator(`photoLink`, {
-                    
-                })(<Input />)}
-                </Form.Item>
-            </Col>,
-          ); children.push(
-            <Col span={6} key={"lyrics"}>
-                <Form.Item label={`Lyrics`}>
-                {getFieldDecorator(`lyrics`, {
-                    
-                })(<Input />)}
-                </Form.Item>
-            </Col>,
-            );
-      return children;
-    }
-  
-    handleSearch = e => {
+    handleSubmit = e => {
       e.preventDefault();
       this.props.form.validateFields((err, values) => {
-        console.log('Received values of form: ', values);
+        this.props.submit(values);
       });
     };
   
@@ -94,9 +18,84 @@ class SongForm extends Component {
     };
   
     render() {
+    
+      const { song, form } = this.props;
+      const { getFieldDecorator } = form;
+      
       return (
-        <Form className="ant-advanced-search-form" onSubmit={this.handleSearch}>
-          <Row gutter={24}>{this.getFields()}</Row>
+        <Form className="ant-advanced-search-form" onSubmit={this.handleSubmit}>
+          <Row gutter={24}>
+            <Col span={8} key={"id"}>
+              <Form.Item label={`ID`}>
+                {getFieldDecorator(`id`, {
+                
+                })(<Input readOnly={true}/>)}
+              </Form.Item>
+            </Col>
+            <Col span={8} key={"title"}>
+              <Form.Item label={`Title`}>
+                {getFieldDecorator(`title`, {
+                 
+                })(<Input />)}
+              </Form.Item>
+            </Col>
+            <Col span={8} key={"artist"}>
+              <Form.Item label={`Artist`}>
+              {getFieldDecorator(`artist`, {
+                  
+              })(<Input />)}
+              </Form.Item>
+            </Col>
+            <Col span={8} key={"language"}>
+                <Form.Item label={`Language`}>
+                {getFieldDecorator(`language`, {
+                    
+                })(<Input />)}
+                </Form.Item>
+            </Col>
+            <Col span={8} key={"genre"}>
+              <Form.Item label={`Genre`}>
+              {getFieldDecorator(`genre`, {
+                  
+              })(<Input />)}
+              </Form.Item>
+            </Col>
+            <Col span={8} key={"album"}>
+                <Form.Item label={`Album`}>
+                {getFieldDecorator(`album`, {
+                    
+                })(<Input />)}
+                </Form.Item>
+            </Col>
+            <Col span={8} key={"photolink"}>
+                <Form.Item label={`Photo Url`}>
+                {getFieldDecorator(`photoLink`, {
+                    
+                })(<Input />)}
+                </Form.Item>
+            </Col>
+            <Col span={8} key={"lyrics"}>
+                <Form.Item label={`Lyrics`}>
+                {getFieldDecorator(`lyrics`, {
+                    
+                })(<Input />)}
+                </Form.Item>
+            </Col>
+            <Col span={8} key={"downloadLinkName"}>
+                <Form.Item label={`DL Name`}>
+                {getFieldDecorator(`downloadLinkName`, {
+                    
+                })(<Input />)}
+                </Form.Item>
+            </Col>
+            <Col span={8} key={"downloadLinkUrl"}>
+                <Form.Item label={`DL Url`}>
+                {getFieldDecorator(`downloadLinkUrl`, {
+                    
+                })(<Input />)}
+                </Form.Item>
+            </Col>
+          </Row>
           <Row>
             <Col span={24} style={{ textAlign: 'right' }}>
               <Button type="primary" htmlType="submit">
@@ -112,4 +111,51 @@ class SongForm extends Component {
     }
   }
   
-export default Form.create({ name: 'song_form' })(SongForm);
+export default Form.create(
+  { name: 'song_form', 
+    mapPropsToFields(props) {
+     const song = props.song;
+    return {
+      id: Form.createFormField({
+        ...song.id,
+        value: song.id,
+      }),
+      title: Form.createFormField({
+        ...song.title,
+        value: song.title,
+      }),
+      artist: Form.createFormField({
+        ...song.artist,
+        value: song.artist,
+      }),
+      language: Form.createFormField({
+        ...song.language,
+        value: song.language,
+      }),
+      genre: Form.createFormField({
+        ...song.genre,
+        value: song.genre,
+      }),
+      album: Form.createFormField({
+        ...song.album,
+        value: song.album,
+      }),
+      photoLink: Form.createFormField({
+        ...song.photoLink,
+        value: song.photoLink,
+      }),
+      lyrics: Form.createFormField({
+        ...song.lyrics,
+        value: song.lyrics,
+      }),
+      downloadLinkName: Form.createFormField({
+        ...song.downloadLinkName,
+        value: song.downloadLinkName,
+      }),
+      downloadLinkUrl: Form.createFormField({
+        ...song.downloadLinkUrl,
+        value: song.downloadLinkUrl,
+      }),
+    };
+  },
+})(SongForm);
