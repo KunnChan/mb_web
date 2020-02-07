@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Form, Row, Col, Button, Input } from 'antd';
 
-class SongForm extends Component {
+class AlbumForm extends Component {
   
     handleSubmit = e => {
       e.preventDefault();
@@ -56,9 +56,9 @@ class SongForm extends Component {
               })(<Input />)}
               </Form.Item>
             </Col>
-            <Col span={8} key={"language"}>
-                <Form.Item label={`Language`}>
-                {getFieldDecorator(`language`, {
+            <Col span={8} key={"songId"}>
+                <Form.Item label={`Song Id`}>
+                {getFieldDecorator(`songId`, {
                     
                 })(<Input />)}
                 </Form.Item>
@@ -70,38 +70,9 @@ class SongForm extends Component {
               })(<Input />)}
               </Form.Item>
             </Col>
-            
             <Col span={8} key={"photolink"}>
                 <Form.Item label={`Photo Url`}>
                 {getFieldDecorator(`photoLink`, {
-                    
-                })(<Input />)}
-                </Form.Item>
-            </Col>
-            <Col span={8} key={"lyrics"}>
-                <Form.Item label={`Lyrics`}>
-                {getFieldDecorator(`lyrics`, {
-                    
-                })(<Input />)}
-                </Form.Item>
-            </Col>
-            <Col span={8} key={"downloadLinkName"}>
-                <Form.Item label={`DL Name`}>
-                {getFieldDecorator(`downloadLinkName`, {
-                    
-                })(<Input />)}
-                </Form.Item>
-            </Col>
-            <Col span={8} key={"downloadLinkUrl"}>
-                <Form.Item label={`DL Url`}>
-                {getFieldDecorator(`downloadLinkUrl`, {
-                    
-                })(<Input />)}
-                </Form.Item>
-            </Col>
-            <Col span={16} key={"information"}>
-                <Form.Item label={`Keywords`}>
-                {getFieldDecorator(`information`, {
                     
                 })(<Input />)}
                 </Form.Item>
@@ -123,51 +94,31 @@ class SongForm extends Component {
   }
   
 export default Form.create(
-  { name: 'song_form', 
+  { name: 'album_form', 
     mapPropsToFields(props) {
-     const song = props.song;
+     const album = props.album;
     return {
       id: Form.createFormField({
-        ...song.id,
-        value: song.id,
+        ...album.id,
+        value: album.id,
       }),
       title: Form.createFormField({
-        ...song.title,
-        value: song.title,
+        ...album.title,
+        value: album.title,
       }),
       artist: Form.createFormField({
-        ...song.artist,
-        value: song.artist,
-      }),
-      language: Form.createFormField({
-        ...song.language,
-        value: song.language,
+        ...album.artist,
+        value: album.artist,
       }),
       genre: Form.createFormField({
-        ...song.genre,
-        value: song.genre,
+        ...album.genre,
+        value: album.genre,
       }),
      
       photoLink: Form.createFormField({
-        ...song.photoLink,
-        value: song.photoLink,
-      }),
-      lyrics: Form.createFormField({
-        ...song.lyrics,
-        value: song.lyrics,
-      }),
-      downloadLinkName: Form.createFormField({
-        ...song.downloadLinkName,
-        value: song.downloadLinkName,
-      }),
-      downloadLinkUrl: Form.createFormField({
-        ...song.downloadLinkUrl,
-        value: song.downloadLinkUrl,
-      }),
-      information: Form.createFormField({
-        ...song.information,
-        value: song.information,
+        ...album.photoLink,
+        value: album.photoLink,
       }),
     };
   },
-})(SongForm);
+})(AlbumForm);

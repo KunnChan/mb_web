@@ -9,6 +9,7 @@ import Landing from "./Landing";
 import { fetchUser } from "../actions";
 import SignOut from "./common/SignOut";
 import { keyToken } from "../actions/types";
+import  Album  from "./Album";
 
 class App extends Component {
 	
@@ -39,6 +40,7 @@ class App extends Component {
 						<Route exact path="/" component={SignIn} />
 						<Route exact path="/signup" component={SignUp} />
 						<Route exact path="/home" component={Landing} />
+						<Route exact path="/album" component={Album} />
 						{/* <Route exact path="/order/:id/:name" component={Order} /> */}
 						{/* <Route exact path="/cancel/:id/:name" component={Cancel} /> */}
 						<Route exact path="/signout" component={SignOut} />

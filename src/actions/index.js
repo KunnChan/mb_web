@@ -1,6 +1,12 @@
 import axios from "axios";
 import qs from "qs";
 import * as TYPES from "./types";
+import { message } from 'antd';
+
+
+const showErrorMessage = (text) => {
+	message.error(text);
+};
 
 const axiosInstance = axios.create({
 	timeout: 1000,
@@ -34,6 +40,9 @@ const errorHandler = (err) => {
 	return new Promise((resolve, reject) => {
 		const originalReq = err.config;
 		if ( err.response && err.response.status === 401 && err.config && !err.config.__isRetryRequest ){
+
+			console.log("401", err);
+			
 			originalReq._retry = true;
 
 			const auth = localStorage.getItem(TYPES.keyToken);
@@ -59,19 +68,19 @@ const errorHandler = (err) => {
 					localStorage.removeItem(TYPES.keyToken);
 					localStorage.removeItem(TYPES.keyUserName);
 					localStorage.removeItem(TYPES.keyUser)
-					return Promise.reject(error);
+					return reject(err);
 				})
-			//	return Promise.resolve(resolve);
 			}
-			return Promise.resolve(resolve);
+			return resolve();
 		}
-		return Promise.reject(err);
+		const { status, error } = err.response.data;
+		showErrorMessage(status + " : "+ error)
+		return reject(err);
 	});
 }
   
 const successHandler = (response) => {
 
-//console.log("successHandler ", response);
  return response
 }
 
@@ -153,6 +162,36 @@ export const saveSong = reqData => async dispatch => {
 		dispatch({ type: TYPES.SONG, payload: res.data });
   }).catch(error => {
 	console.error("saveSong ",error);
+  })
+  
+};
+
+export const fetchAlbums = reqData => async dispatch => {
+	const data = {
+		id: reqData.id,
+		title : reqData.title,
+		artist: reqData.artist,
+		genre: reqData.genre,
+		page: {
+			page: reqData.page,
+			size: reqData.size
+		}
+	}
+  axiosInstance.post(TYPES.urlAlbums, data)
+  	.then( res => {
+		dispatch({ type: TYPES.ALBUMS, payload: res.data });
+  }).catch(error => {
+	console.error("fetchAlbums ",error);
+  })
+  
+};
+
+export const saveAlbum = reqData => async dispatch => {
+  axiosInstance.post(TYPES.urlSaveAlbum, reqData)
+  	.then(res => {
+		dispatch({ type: TYPES.ALBUM, payload: res.data });
+  }).catch(error => {
+	console.error("saveAlbum ",error);
   })
   
 };

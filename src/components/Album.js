@@ -1,46 +1,43 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Layout, Table, Button } from 'antd';
-import { fetchSongs, saveSong } from "../actions";
-import SongAdvandSearchForm from "./SongAdvandSearchForm";
-import SongForm from "./SongForm";
+import { fetchAlbums, saveAlbum } from "../actions";
+import AlbumAdvandSearchForm from "./AlbumAdvandSearchForm";
+import AlbumForm from "./AlbumForm";
 
 const { Content } = Layout;
 
 const columns = [
-  { title: 'ID', dataIndex: 'id', width: '5%'},
-  { title: 'Title', dataIndex: 'title', width: '20%', render: text => <span className="linkColor">{text}</span> },
-  { title: 'Artist', dataIndex: 'artist', width: '20%'},
-  { title: 'Download', dataIndex: 'downloads', width: '10%' },
-  { title: 'Album', dataIndex: 'album', width: '20%'},
-  { title: 'Language', dataIndex: 'language', width: '15%' },
+  { title: 'ID', dataIndex: 'id', width: '10%'},
+  { title: 'Title', dataIndex: 'title', width: '30%', render: text =><span className="linkColor">{text}</span> },
+  { title: 'Artist', dataIndex: 'artist', width: '30%'},
+  { title: 'Songs', dataIndex: 'songCount', width: '10%' },
   { title: 'Genre', dataIndex: 'genre', width: '20%'}
 ];
-export class Landing extends Component {
+export class Album extends Component {
 
   state = {
     isOnEdit : false,
     isOnSearch: false,
-    song: {},
+    album: {},
     reqData : {
       title : "",
       artist: "",
-      language: "",
-      info: "",
+      genre: "",
       page: 0,
       size: 10
     }
   }
 
 	componentDidMount = () => {
-		this.props.fetchSongs(this.state.reqData);
+		this.props.fetchAlbums(this.state.reqData);
   };
 
   handleTableChange = (pagination) => {
 
     const { reqData } = this.state;
     reqData.page = pagination.current - 1;
-    this.props.fetchSongs(reqData);
+    this.props.fetchAlbums(reqData);
   };
 
   onFormClick = () =>{
@@ -49,7 +46,7 @@ export class Landing extends Component {
   }
 
   handleFormSubmit = data => {
-    this.props.saveSong(data);
+    this.props.saveAlbum(data);
     this.setState({ isOnEdit : false});
   }
 
@@ -64,13 +61,13 @@ export class Landing extends Component {
 
     this.setState({ reqData})
 
-    this.props.fetchSongs(reqData);
+    this.props.fetchAlbums(reqData);
     
   }
 
   handleRowDoubleClick = data =>{
     this.setState({
-      song: data,
+      album: data,
       isOnEdit: true
     })
   }
@@ -78,11 +75,11 @@ export class Landing extends Component {
 
 	render() {
 		
-    let { songs } = this.props;
+    let { albums } = this.props;
 		const pagination = {
-      total : songs.totalElements,
-      pageSize: songs.size,
-      current: songs.number + 1
+      total : albums.totalElements,
+      pageSize: albums.size,
+      current: albums.number + 1
 		}
 		
 		return (
@@ -90,8 +87,8 @@ export class Landing extends Component {
         <div style={{ marginBottom: '20px' }} >
 				  <Button type="primary" icon="form" onClick={this.onFormClick} />
         </div>
-        {this.state.isOnEdit ? <SongForm submit={this.handleFormSubmit} song={this.state.song} /> : null}
-        <SongAdvandSearchForm submit={this.handleFormSearch}/>
+        {this.state.isOnEdit ? <AlbumForm submit={this.handleFormSubmit} album={this.state.album} /> : null}
+        <AlbumAdvandSearchForm submit={this.handleFormSearch}/>
        
         <hr />
 				<Table
@@ -102,7 +99,7 @@ export class Landing extends Component {
           }}
 					columns={columns}
 					rowKey={record => record.id}
-					dataSource={songs.content}
+					dataSource={albums.content}
 					pagination={pagination}
           onChange={this.handleTableChange}
           size="small"
@@ -111,8 +108,8 @@ export class Landing extends Component {
 		);
 	}
 }
-const mapStateToProps = ({ auth, songs, song, user }) => {
-	return { auth, songs, song, user };
+const mapStateToProps = ({ auth, album, albums }) => {
+	return { auth, album, albums };
 };
 
-export default connect( mapStateToProps, { fetchSongs, saveSong })(Landing);
+export default connect( mapStateToProps, { fetchAlbums, saveAlbum })(Album);

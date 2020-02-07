@@ -6,6 +6,8 @@ export const UNAUTH_USER = "UNAUTH_USER";
 export const SONGS = "SONGS";
 export const SONG = "SONG";
 export const USER ="USER";
+export const ALBUM ="ALBUM";
+export const ALBUMS ="ALBUMS";
 
 export const keyToken = "access_token";
 export const keyUserName = "user_name";
@@ -18,6 +20,11 @@ export const urlUserInfo = endpoint + '/zone/user/username/';
 
 export const urlSongs = endpoint + '/song/query';
 export const urlSaveSong = endpoint + '/shield/song/save';
+
+export const urlAlbums = endpoint + '/album/query';
+export const urlSaveAlbum = endpoint + '/shield/album/save';
+
+
 
 export const levelOrder = "order";
 export const levelReOrder = "reOrder";
