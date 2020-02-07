@@ -195,3 +195,76 @@ export const saveAlbum = reqData => async dispatch => {
   })
   
 };
+
+export const fetchFeedbacks = reqData => async dispatch => {
+	const data = {
+		id: reqData.id,
+		fromDt : reqData.fromDt,
+		toDt: reqData.toDt,
+		emailOrphone: reqData.emailOrphone,
+		text: reqData.text,
+		name: reqData.name,
+		page: {
+			page: reqData.page,
+			size: reqData.size
+		}
+	}
+  axiosInstance.post(TYPES.urlFeedback, data)
+  	.then( res => {
+		dispatch({ type: TYPES.FEEDBACK, payload: res.data });
+  }).catch(error => {
+	console.error("fetchFeedbacks ",error);
+  })
+  
+};
+
+export const fetchTxns = reqData => async dispatch => {
+	const data = {
+		id: reqData.id,
+		fromDt : reqData.fromDt,
+		toDt: reqData.toDt,
+		eventAction: reqData.eventAction,
+		page: {
+			page: reqData.page,
+			size: reqData.size
+		}
+	}
+  axiosInstance.post(TYPES.urlTxns, data)
+  	.then( res => {
+		dispatch({ type: TYPES.TXNS, payload: res.data });
+  }).catch(error => {
+	console.error("fetchTxns ",error);
+  })
+  
+};
+
+export const fetchUsers = reqData => async dispatch => {
+	const data = {
+		id: reqData.id,
+		username : reqData.username,
+		name: reqData.name,
+		email: reqData.email,
+		phone: reqData.phone,
+		page: {
+			page: reqData.page,
+			size: reqData.size
+		}
+	}
+  axiosInstance.post(TYPES.urlUsers, data)
+  	.then( res => {
+		dispatch({ type: TYPES.USERS, payload: res.data });
+  }).catch(error => {
+	console.error("fetchUsers ",error);
+  })
+  
+};
+
+export const saveUser = reqData => async dispatch => {
+  axiosInstance.post(TYPES.urlSaveUser, reqData)
+  	.then(res => {
+		dispatch({ type: TYPES.USER, payload: res.data });
+  }).catch(error => {
+	console.error("saveUser ",error);
+  })
+  
+};

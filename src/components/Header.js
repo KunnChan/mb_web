@@ -21,9 +21,9 @@ class Headerr extends Component {
 					<Menu.Item key="2">
 						<Link to="/album">Album</Link>
 					</Menu.Item>
-					<Menu.Item key="3">Feedback</Menu.Item>
-					<Menu.Item key="4">Txn</Menu.Item>
-					<Menu.Item key="5">User</Menu.Item>
+					<Menu.Item key="3"> <Link to="/feedback">Feedback</Link></Menu.Item>
+					<Menu.Item key="4"> <Link to="/txns">Txn</Link></Menu.Item>
+					<Menu.Item key="5"> <Link to="/user">User</Link></Menu.Item>
 					<Menu.Item key="7" style={{ float: "right" }}>
 						<Link to="/signout">Sign Out</Link>
 					</Menu.Item>

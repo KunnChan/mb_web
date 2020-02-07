@@ -10,6 +10,9 @@ import { fetchUser } from "../actions";
 import SignOut from "./common/SignOut";
 import { keyToken } from "../actions/types";
 import  Album  from "./Album";
+import Feedback from "./Feedback";
+import Txn from "./Txn";
+import User from "./User";
 
 class App extends Component {
 	
@@ -41,6 +44,9 @@ class App extends Component {
 						<Route exact path="/signup" component={SignUp} />
 						<Route exact path="/home" component={Landing} />
 						<Route exact path="/album" component={Album} />
+						<Route exact path="/feedback" component={Feedback} />
+						<Route exact path="/txns" component={Txn} />
+						<Route exact path="/user" component={User} />
 						{/* <Route exact path="/order/:id/:name" component={Order} /> */}
 						{/* <Route exact path="/cancel/:id/:name" component={Cancel} /> */}
 						<Route exact path="/signout" component={SignOut} />

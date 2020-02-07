@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Form, Row, Col, Button, Input } from 'antd';
-class SongAdvancedSearchForm extends Component {
+class UserAdvancedSearchForm extends Component {
     state = {
       expand: false,
     };
@@ -22,30 +22,37 @@ class SongAdvancedSearchForm extends Component {
       return (
         <Form className="ant-advanced-search-form" onSubmit={this.handleSubmit}>
           <Row gutter={24}>
-            <Col span={4} key={"id"}>
+            <Col span={2} key={"id"}>
               <Form.Item label={`ID`}>
                 {getFieldDecorator(`id`, {
                 
                 })(<Input />)}
               </Form.Item>
             </Col>
-            <Col span={8} key={"title"}>
-              <Form.Item label={`Title`}>
-                {getFieldDecorator(`title`, {
+            <Col span={4} key={"username"}>
+              <Form.Item label={`Username`}>
+                {getFieldDecorator(`username`, {
                   
                 })(<Input />)}
               </Form.Item>
             </Col>
-            <Col span={6} key={"artist"}>
-              <Form.Item label={`Artist`}>
-              {getFieldDecorator(`artist`, {
+            <Col span={6} key={"name"}>
+              <Form.Item label={`Name`}>
+              {getFieldDecorator(`name`, {
                   
               })(<Input />)}
               </Form.Item>
             </Col>
-            <Col span={6} key={"language"}>
-                <Form.Item label={`Language`}>
-                {getFieldDecorator(`language`, {
+            <Col span={6} key={"phone"}>
+                <Form.Item label={`Phone`}>
+                {getFieldDecorator(`phone`, {
+                    
+                })(<Input />)}
+                </Form.Item>
+            </Col>
+            <Col span={6} key={"email"}>
+                <Form.Item label={`Email`}>
+                {getFieldDecorator(`email`, {
                     
                 })(<Input />)}
                 </Form.Item>
@@ -66,4 +73,4 @@ class SongAdvancedSearchForm extends Component {
     }
   }
 
-export default Form.create({ name: 'advanced_search' })(SongAdvancedSearchForm);
+export default Form.create({ name: 'advanced_search' })(UserAdvancedSearchForm);
