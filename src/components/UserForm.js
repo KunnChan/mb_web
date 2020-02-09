@@ -1,8 +1,7 @@
 import React, { Component } from "react";
-import { Form, Row, Col, Button, Input, Select } from 'antd';
+import { Form, Row, Col, Button, Input, Select, DatePicker } from 'antd';
 
 const { Option } = Select;
-Option.initialValue = "ACTIVE"
 class UserForm extends Component {
   
     handleSubmit = e => {
@@ -89,6 +88,13 @@ class UserForm extends Component {
                 {getFieldDecorator(`point`, {
                     
                 })(<Input />)}
+                </Form.Item>
+            </Col>
+            <Col span={8} key={"dob"}>
+                <Form.Item label={`Dob`}>
+                {getFieldDecorator(`dob`, {
+                    
+                })(<DatePicker />)}
                 </Form.Item>
             </Col>
             <Col span={8} key={"activationStatus"}>

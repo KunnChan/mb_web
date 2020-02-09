@@ -34,7 +34,7 @@ export const urlFeedback = endpoint +'/zone/feedback/query';
 export const urlTxns = endpoint +'/zone/history/query';
 
 export const urlUsers = endpoint + '/zone/user/query';
-export const urlSaveUser = endpoint + '/zone/user/save';
+export const urlSaveUser = endpoint + '/user/save';
 
 
 export const levelOrder = "order";

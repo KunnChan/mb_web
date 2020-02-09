@@ -13,8 +13,13 @@ const columns = [
   { title: 'Username', dataIndex: 'username', width: '10%', render: text => <span className="linkColor">{text}</span> },
   { title: 'Name', dataIndex: 'name', width: '15%'},
   { title: 'Phone', dataIndex: 'phone', width: '10%' },
-  { title: 'Email', dataIndex: 'email', width: '17%'},
-  { title: 'CreatedAt', dataIndex: 'createdDate', width: '15%', render: text => {
+  { title: 'Email', dataIndex: 'email', width: '10%'},
+  { title: 'Dob', dataIndex: 'dob', width: '10%', render: text => {
+    if(!text) return text;
+    let times = text.split('T');
+    return times[0];
+  }},
+  { title: 'CreatedAt', dataIndex: 'createdDate', width: '10%', render: text => {
     if(!text) return text;
     let times = text.split('T');
     let time = times[1].split('.');
@@ -22,7 +27,7 @@ const columns = [
     return dt;
   }},
   { title: 'Note', dataIndex: 'note', width: '15%' },
-  { title: 'Status', dataIndex: 'activationStatus', width: '8%'}
+  { title: 'Status', dataIndex: 'activationStatus', width: '10%'}
 ];
 export class User extends Component {
 

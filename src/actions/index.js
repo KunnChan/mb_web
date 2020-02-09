@@ -129,8 +129,6 @@ export const signinUser = (username, password) => async dispatch => {
 
 export const signout = () => async dispatch => {
 
-	console.log("Signout ", dispatch);
-	
 	dispatch({ type: TYPES.UNAUTH_USER, payload: false });
 	localStorage.removeItem(TYPES.keyToken);
 	localStorage.removeItem(TYPES.keyUserName);
