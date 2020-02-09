@@ -51,7 +51,7 @@ class Headerr extends Component {
 						backgroundColor:'#247796',
 						height: 50
 					}}>
-					<Link to="/" className="logo">
+					<Link to="/home" className="logo">
 					  Rythm Box
 					</Link>
 					{this.renderSignOutLink()}

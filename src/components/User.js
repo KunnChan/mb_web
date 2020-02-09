@@ -2,26 +2,34 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Layout, Table, Button } from 'antd';
 import { fetchUsers, saveUser } from "../actions";
-import SongForm from "./SongForm";
+import UserForm from "./UserForm";
 import UserAdvandSearchForm from "./UserAdvandSearchForm";
 
 const { Content } = Layout;
 
 const columns = [
   { title: 'ID', dataIndex: 'id', width: '5%'},
-  { title: 'Username', dataIndex: 'username', width: '20%', render: text => <span className="linkColor">{text}</span> },
-  { title: 'Name', dataIndex: 'name', width: '20%'},
+  { title: 'Point', dataIndex: 'point', width: '5%'},
+  { title: 'Username', dataIndex: 'username', width: '10%', render: text => <span className="linkColor">{text}</span> },
+  { title: 'Name', dataIndex: 'name', width: '15%'},
   { title: 'Phone', dataIndex: 'phone', width: '10%' },
-  { title: 'Email', dataIndex: 'email', width: '20%'},
+  { title: 'Email', dataIndex: 'email', width: '17%'},
+  { title: 'CreatedAt', dataIndex: 'createdDate', width: '15%', render: text => {
+    if(!text) return text;
+    let times = text.split('T');
+    let time = times[1].split('.');
+    let dt = times[0] + " "+ time[0];
+    return dt;
+  }},
   { title: 'Note', dataIndex: 'note', width: '15%' },
-  { title: 'Status', dataIndex: 'activationStatus', width: '20%'}
+  { title: 'Status', dataIndex: 'activationStatus', width: '8%'}
 ];
 export class User extends Component {
 
   state = {
     isOnEdit : false,
     isOnSearch: false,
-    song: {},
+    user: {},
     reqData : {
       name : "",
       email: "",
@@ -45,6 +53,8 @@ export class User extends Component {
   };
 
   onFormClick = () =>{
+    let { user } = this.state;
+    user.onCreate = true;
     this.setState({ isOnEdit : !this.state.isOnEdit})
     
   }
@@ -71,8 +81,9 @@ export class User extends Component {
   }
 
   handleRowDoubleClick = data =>{
+    data.onCreate = false;
     this.setState({
-      song: data,
+      user: data,
       isOnEdit: true
     })
   }
@@ -92,7 +103,7 @@ export class User extends Component {
         <div style={{ marginBottom: '20px' }} >
 				  <Button type="primary" icon="form" onClick={this.onFormClick} />
         </div>
-        {this.state.isOnEdit ? <SongForm submit={this.handleFormSubmit} song={this.state.song} /> : null}
+        {this.state.isOnEdit ? <UserForm submit={this.handleFormSubmit} user={this.state.user} /> : null}
         <UserAdvandSearchForm submit={this.handleFormSearch}/>
        
         <hr />

@@ -26,6 +26,8 @@ axiosInstance.interceptors.response.use(
 
 const requestHandler = (request) => {
 	const auth = JSON.parse(localStorage.getItem(TYPES.keyToken));
+	
+	request.headers['device-type'] = "Portal";
 	if (!auth) {
 		return request;
 	}else{

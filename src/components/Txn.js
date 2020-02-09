@@ -9,7 +9,14 @@ const { Content } = Layout;
 const columns = [
   { title: 'ID', dataIndex: 'id', width: '5%'},
   { title: 'Event Action', dataIndex: 'eventAction', width: '10%', render: text => <span className="linkColor">{text}</span> },
-  { title: 'Date', dataIndex: 'transactionDate', width: '10%'},
+  { title: 'Date', dataIndex: 'transactionDate', width: '10%', render: text => {
+    if(!text) return text;
+
+    let times = text.split('T');
+    let time = times[1].split('.');
+    let dt = times[0] + " "+ time[0];
+    return dt;
+  }},
   { title: 'Payload', dataIndex: 'payload', width: '75%'},
 ];
 export class Feedback extends Component {

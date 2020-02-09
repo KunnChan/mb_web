@@ -1,6 +1,8 @@
 import React, { Component } from "react";
-import { Form, Row, Col, Button, Input } from 'antd';
+import { Form, Row, Col, Button, Input, Select } from 'antd';
 
+const { Option } = Select;
+Option.initialValue = "ACTIVE"
 class UserForm extends Component {
   
     handleSubmit = e => {
@@ -19,9 +21,8 @@ class UserForm extends Component {
   
     render() {
     
-      const { form } = this.props;
+      const { form, user } = this.props;
       const { getFieldDecorator } = form;
-      
       return (
         <Form className="ant-advanced-search-form" onSubmit={this.handleSubmit}>
           <Row gutter={24}>
@@ -32,80 +33,90 @@ class UserForm extends Component {
                 })(<Input readOnly={true}/>)}
               </Form.Item>
             </Col>
-            <Col span={8} key={"title"}>
-              <Form.Item label={`Title`}>
-                {getFieldDecorator(`title`, {
+            <Col span={8} key={"username"}>
+              <Form.Item label={`Username`}>
+                {getFieldDecorator(`username`, {
                  rules: [
                   {
                     required: true,
-                    message: 'Title should not be empty!',
+                    message: 'Username should not be empty!',
                   },
                 ]
                 })(<Input />)}
               </Form.Item>
             </Col>
-            <Col span={8} key={"artist"}>
-              <Form.Item label={`Artist`}>
-              {getFieldDecorator(`artist`, {
+            <Col span={8} key={"name"}>
+              <Form.Item label={`Name`}>
+              {getFieldDecorator(`name`, {
                   rules: [
                     {
                       required: true,
-                      message: 'Artist should not be empty!',
+                      message: 'Name should not be empty!',
                     },
                   ]
               })(<Input />)}
               </Form.Item>
             </Col>
-            <Col span={8} key={"language"}>
-                <Form.Item label={`Language`}>
-                {getFieldDecorator(`language`, {
-                    
+            <Col span={8} key={"phone"}>
+                <Form.Item label={`Phone`}>
+                {getFieldDecorator(`phone`, {
+                    rules: [
+                      {
+                        required: true,
+                        message: 'Phone should not be empty!',
+                      },
+                    ]
                 })(<Input />)}
                 </Form.Item>
             </Col>
-            <Col span={8} key={"genre"}>
-              <Form.Item label={`Genre`}>
-              {getFieldDecorator(`genre`, {
+            <Col span={8} key={"email"}>
+              <Form.Item label={`Email`}>
+              {getFieldDecorator(`email`, {
                   
               })(<Input />)}
               </Form.Item>
             </Col>
             
-            <Col span={8} key={"photolink"}>
-                <Form.Item label={`Photo Url`}>
-                {getFieldDecorator(`photoLink`, {
+            <Col span={8} key={"note"}>
+                <Form.Item label={`Note`}>
+                {getFieldDecorator(`note`, {
                     
                 })(<Input />)}
                 </Form.Item>
             </Col>
-            <Col span={8} key={"lyrics"}>
-                <Form.Item label={`Lyrics`}>
-                {getFieldDecorator(`lyrics`, {
+            <Col span={8} key={"point"}>
+                <Form.Item label={`Point`}>
+                {getFieldDecorator(`point`, {
                     
                 })(<Input />)}
                 </Form.Item>
             </Col>
-            <Col span={8} key={"downloadLinkName"}>
-                <Form.Item label={`DL Name`}>
-                {getFieldDecorator(`downloadLinkName`, {
-                    
-                })(<Input />)}
+            <Col span={8} key={"activationStatus"}>
+                <Form.Item label={`Status`}>
+                {getFieldDecorator(`activationStatus`, {
+                   
+                })(<Select>
+                    <Option value="ACTIVE">ACTIVE</Option>
+                    <Option value="PENDING">PENDING</Option>
+                    <Option value="BLOCKED">BLOCKED</Option>
+                    <Option value="INACTIVE">INACTIVE</Option>
+                  </Select>)}
                 </Form.Item>
             </Col>
-            <Col span={8} key={"downloadLinkUrl"}>
-                <Form.Item label={`DL Url`}>
-                {getFieldDecorator(`downloadLinkUrl`, {
-                    
-                })(<Input />)}
-                </Form.Item>
-            </Col>
-            <Col span={16} key={"information"}>
-                <Form.Item label={`Keywords`}>
-                {getFieldDecorator(`information`, {
-                    
-                })(<Input />)}
-                </Form.Item>
-            </Col>
+            {
+              user.onCreate ? (<Col span={8} key={"password"}>
+                  <Form.Item label={`Password`}>
+                  {getFieldDecorator(`password`, {
+                      rules: [
+                        {
+                          required: true,
+                          message: 'Password should not be empty!',
+                        },
+                      ]
+                  })(<Input />)}
+                  </Form.Item>
+              </Col>) : null
+            }
           </Row>
           <Row>
             <Col span={24} style={{ textAlign: 'right' }}>
@@ -123,51 +134,44 @@ class UserForm extends Component {
   }
   
 export default Form.create(
-  { name: 'song_form', 
+  { name: 'user_form', 
     mapPropsToFields(props) {
-     const song = props.song;
+     const user = props.user;
     return {
       id: Form.createFormField({
-        ...song.id,
-        value: song.id,
+        ...user.id,
+        value: user.id,
       }),
-      title: Form.createFormField({
-        ...song.title,
-        value: song.title,
+      username: Form.createFormField({
+        ...user.username,
+        value: user.username,
       }),
-      artist: Form.createFormField({
-        ...song.artist,
-        value: song.artist,
+      name: Form.createFormField({
+        ...user.name,
+        value: user.name,
       }),
-      language: Form.createFormField({
-        ...song.language,
-        value: song.language,
+      phone: Form.createFormField({
+        ...user.phone,
+        value: user.phone,
       }),
-      genre: Form.createFormField({
-        ...song.genre,
-        value: song.genre,
+      email: Form.createFormField({
+        ...user.email,
+        value: user.email,
       }),
      
-      photoLink: Form.createFormField({
-        ...song.photoLink,
-        value: song.photoLink,
+      note: Form.createFormField({
+        ...user.note,
+        value: user.note,
       }),
-      lyrics: Form.createFormField({
-        ...song.lyrics,
-        value: song.lyrics,
+      activationStatus: Form.createFormField({
+        ...user.activationStatus,
+        value: user.activationStatus,
       }),
-      downloadLinkName: Form.createFormField({
-        ...song.downloadLinkName,
-        value: song.downloadLinkName,
+      point: Form.createFormField({
+        ...user.point,
+        value: user.point,
       }),
-      downloadLinkUrl: Form.createFormField({
-        ...song.downloadLinkUrl,
-        value: song.downloadLinkUrl,
-      }),
-      information: Form.createFormField({
-        ...song.information,
-        value: song.information,
-      }),
+      
     };
   },
 })(UserForm);
