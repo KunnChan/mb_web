@@ -43,8 +43,6 @@ const errorHandler = (err) => {
 		const originalReq = err.config;
 		if ( err.response && err.response.status === 401 && err.config && !err.config.__isRetryRequest ){
 
-			console.log("401", err);
-			
 			originalReq._retry = true;
 
 			const auth = localStorage.getItem(TYPES.keyToken);
@@ -66,7 +64,6 @@ const errorHandler = (err) => {
 					localStorage.setItem(TYPES.keyToken, JSON.stringify(res.data));
 					return axiosInstance(originalReq);
 				}).catch(error => {
-					debugger
 					localStorage.removeItem(TYPES.keyToken);
 					localStorage.removeItem(TYPES.keyUserName);
 					localStorage.removeItem(TYPES.keyUser)
