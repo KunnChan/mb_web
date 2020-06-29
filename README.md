@@ -1,4 +1,5 @@
-# Rythm Dashboard
+# Music Browser Web
+### build with ReactJs
 
 ## first install dependency
   #### npm install
@@ -7,4 +8,4 @@
   ### "proxy": "http://localhost:8188", this will be your api endpoint
 
 ## start it up
-  #### npm start
+  #### npm run start
